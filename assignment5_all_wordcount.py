@@ -31,13 +31,14 @@ print_words() and print_top().
 def contains_word(s, w):
     return (' ' + w + ' ') in (' ' + s + ' ')
 #========================================================================
-def  print_words(fname):
-  with open(fname) as f_obj:
-    contents = f_obj.read()
+def get_file_data(fname):
+    with open(fname) as f_obj:
+        contents = f_obj.read()
     print('\nFILE CONTENTS ARE: ')
     print('===================')
     print(contents)
     contents = contents.split()
+    sort_dict = {}
     count = 0
     for i in range(0,len(contents)):
       for words in contents:
@@ -45,17 +46,21 @@ def  print_words(fname):
           count += 1
       sort_dict[contents[i].upper()] = count
       count = 0
+    return sort_dict
+#========================================================================
+def  print_words(fname):
+    sort_dict = get_file_data(fname)
     print('\nDictionary ')
     print('===========')
     print(sort_dict)
 #==========================================================================
 def  print_top(filename):
-
-   print_words(filename)
-   print('\nSORT BY MOST COMMON WORDS:')
-   print('=============================')
-   for key, value in sorted(sort_dict.items(), key=lambda item: (item[1]),reverse = True):
-      print(key + ' = ' + str(value))
+    sort_dict = {}
+    sort_dict = get_file_data(filename)
+    print('\nSORT BY MOST COMMON WORDS:')
+    print('=============================')
+    for key, value in sorted(sort_dict.items(), key=lambda item: (item[1]),reverse = True):
+        print(key + ' = ' + str(value))
 
 
 
@@ -72,7 +77,7 @@ import sys
 # Then print_words() and print_top() can just call the utility function.
 
 ###
-sort_dict = {}
+
 # This basic command line argument parsing code is provided and
 # calls the print_words() and print_top() functions which you must define.
 def main():
@@ -80,7 +85,7 @@ def main():
     print ('usage: ./wordcount.py {--count | --topcount} file')
     #sys.exit(1)
 
-  option = '--topcount'
+  option = input()
   filename = 'Data.txt'
   if option == '--count':
     print_words(filename)
